@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface CreditAccountMapper {
 
-    CreditAccount selectCreditAccountByUserId(@Param("userId") Long userId);
-
     CreditAccount selectCreditAccountByIdCardNo(@Param("idCardNo") String idCardNo);
 
     int insertCreditAccount(@Param("creditAccount") CreditAccount creditAccount);
