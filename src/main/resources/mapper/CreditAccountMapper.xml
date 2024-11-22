@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.credit.creditmanagement.mapper.CreditAccountMapper">
+    <insert id="insertCreditAccount" parameterType="com.credit.creditmanagement.entity.CreditAccount">
+        insert into credit_account(idCardNo, creditLimit) values (#{creditAccount.idCardNo}, #{creditAccount.creditLimit})
+    </insert>
+
+    <insert id="selectCreditAccountByIdCardNo" parameterType="com.credit.creditmanagement.entity.CreditAccount">
+        select id, idCardNo, creditLimit from credit_account where idCardNo = #{idCardNo}
+    </insert>
+
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.credit.creditmanagement.mapper.CreditAccountTransactionLogMapper">
+    <insert id="insertCreditAccountTransactionLog" parameterType="com.credit.creditmanagement.entity.CreditAccountTransactionLog">
+        insert into credit_account_transaction_log(seqNo, creditAccountId, operation, operationTime) values (#{creditAccountTransactionLog.seqNo}, #{creditAccountTransactionLog.creditAccountId}, #{creditAccountTransactionLog.operation}, #{creditAccountTransactionLog.operationTime})
+    </insert>
+
+</mapper>

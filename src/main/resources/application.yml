@@ -1,0 +1,25 @@
+# 配置redis需要的信息
+spring:
+  redis:
+    host: 118.31.113.254
+    port: 6379
+    password: xxx
+    database: 0
+  datasource:
+    url: jdbc:mysql://118.31.113.254:3306/credit_management
+    username: root
+    password: xxx
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+threadPool:
+  corePoolSize: 9
+  maxPoolSize: 20
+  queueCapacity: 100
+
