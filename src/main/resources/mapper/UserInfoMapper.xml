@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.credit.creditmanagement.mapper.UserInfoMapper">
     <insert id="insertUserInfo" parameterType="com.credit.creditmanagement.entity.UserInfo" useGeneratedKeys="true" keyProperty="userId">
-        insert into user_info(username, address) values (#{userInfo.username}, #{userInfo.address})
+        insert into user_info(username, idCardNo, address) values (#{userInfo.username}, #{userInfo.idCardNo} ,#{userInfo.address})
     </insert>
 
 </mapper>

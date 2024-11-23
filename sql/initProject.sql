@@ -1,8 +1,10 @@
 -- 创建数据库
-DROP DATABASE IF EXISTS credit_management;
-CREATE DATABASE credit_management;
+-- DROP DATABASE IF EXISTS credit_management;
+-- CREATE DATABASE credit_management;
+
 
 -- 创建额度类型表
+USE credit_management;
 DROP TABLE IF EXISTS `amount_category`;
 CREATE TABLE `amount_category` (
                                    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,

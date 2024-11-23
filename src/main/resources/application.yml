@@ -3,13 +3,13 @@ spring:
   redis:
     host: 118.31.113.254
     port: 6379
-    password: xxx
+    password: redis9298
     database: 0
   datasource:
-    url: jdbc:mysql://118.31.113.254:3306/credit_management?serverTimezone=Asia/Shanghai
+    jdbcUrl: jdbc:mysql://118.31.113.254:3306/credit_management
     username: root
-    password: xxx
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: mysql9298
+    driverClassName: com.mysql.cj.jdbc.Driver
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
