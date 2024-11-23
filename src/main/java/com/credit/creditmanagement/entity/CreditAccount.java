@@ -1,6 +1,7 @@
 package com.credit.creditmanagement.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 
@@ -12,6 +13,7 @@ public class CreditAccount {
     /**
      * 编号
      */
+    @Id
     private Long id;
     /**
      * 身份证号

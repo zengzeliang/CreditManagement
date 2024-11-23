@@ -1,6 +1,7 @@
 package com.credit.creditmanagement.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 /**
  * 用户基本信息表
@@ -10,6 +11,7 @@ public class UserInfo {
     /**
      * 用户id
      */
+    @Id
     private Long userId;
     /**
      * 用户名
