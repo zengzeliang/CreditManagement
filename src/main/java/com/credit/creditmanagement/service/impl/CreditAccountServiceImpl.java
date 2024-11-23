@@ -20,6 +20,7 @@ import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     @Autowired
     private CreditAccountTransactionLogMapper creditAccountTransactionLogMapper;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private static Integer seqNoLen = 5;
 
@@ -74,7 +78,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             // 保存流水记录
             CreditAccountTransactionLog creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.INITIAL_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
             // 给用户开户以及更新流水状态
-            saveCreditAccountAmount(request, amount, creditAccountTransactionLog);
+            // 获取spring中给事务添加切面的对象，否则不会通过带切面的对象执行，导致事务失效
+            CreditAccountServiceImpl creditAccountService = applicationContext.getBean(CreditAccountServiceImpl.class);
+            creditAccountService.saveCreditAccountAmount(request, amount, creditAccountTransactionLog);
             // 保存用户信息
             UserInfo userInfo = new UserInfo();
             userInfo.setUsername(request.getUsername());
@@ -225,7 +231,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     public CreditAccountTransactionLog saveTransLog(AccountOperationTypeEnum accountOperationTypeEnum, TransLogStatusEnum transLogStatusEnum) {
         CreditAccountTransactionLog creditAccountTransactionLog = new CreditAccountTransactionLog();
         SeqNo seqNo = new SeqNo();
-        seqNo.setValue(Strings.EMPTY);
+        seqNo.setValue(null);
         // 长期序列号考虑序列中心获取，一次缓存n个序列号到内存
         int insertSeqNoRes = seqNoMapper.insertSeqNo(seqNo);
         if (insertSeqNoRes < 1) {

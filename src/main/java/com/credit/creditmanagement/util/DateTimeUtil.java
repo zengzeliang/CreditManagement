@@ -9,7 +9,7 @@ public class DateTimeUtil {
         // 获取当前时间
         LocalDateTime now = LocalDateTime.now();
         // 定义日期时间格式
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddHH:mm:ss.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmssSSS-");
         // 将当前时间按照指定格式转换成字符串
         String formattedDateTime = now.format(formatter);
         return formattedDateTime;

@@ -11,20 +11,20 @@
     <update id="updateCreditAccountTransactionLog" parameterType="com.credit.creditmanagement.entity.CreditAccountTransactionLog">
         update credit_account_transaction_log
         <set>
-            <if test="creditAccountId!= null">
-                credit_account_id = #{creditAccountId},
+            <if test="creditAccountTransactionLog.creditAccountId!= null">
+                creditAccountId = #{creditAccountTransactionLog.creditAccountId},
             </if>
-            <if test="operation!= null">
-                operation = #{operation},
+            <if test="creditAccountTransactionLog.operation!= null">
+                operation = #{creditAccountTransactionLog.operation},
             </if>
-            <if test="status!= null">
-                status = #{status},
+            <if test="creditAccountTransactionLog.status!= null">
+                status = #{creditAccountTransactionLog.status},
             </if>
-            <if test="operationTime!= null">
-                operation_time = #{operationTime},
+            <if test="creditAccountTransactionLog.operationTime!= null">
+                operationTime = #{creditAccountTransactionLog.operationTime},
             </if>
         </set>
-        where seq_no = #{seqNo}
+        where seqNo = #{creditAccountTransactionLog.seqNo}
     </update>
 
 </mapper>
