@@ -2,6 +2,7 @@ package com.credit.creditmanagement.entity;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -27,8 +28,19 @@ public class CreditAccountTransactionLog {
     private String operation;
 
     /**
+     * 流水状态
+     * @see com.credit.creditmanagement.enums.TransLogStatusEnum
+     */
+    private String status;
+
+    /**
      * 操作时间
      */
     private Date operationTime;
+
+    /**
+     * 当前时间戳
+     */
+    private Timestamp timestamp;
 
 }
