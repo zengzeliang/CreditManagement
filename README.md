@@ -100,7 +100,7 @@ insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00'
 
 /api/credit/queryAmount?idCardNo=1234567
 
-3. 初始化额度
+2. 初始化额度
 
 /api/credit/initialize
 
@@ -113,7 +113,7 @@ insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00'
     "address": "浙江省杭州市"
 }
 
-5. 增加额度
+3. 增加额度
 
 /api/credit/increase
 
@@ -124,7 +124,7 @@ insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00'
     "amount": 3000.00
 }
 
-6. 减少额度
+4. 减少额度
 
 /api/credit/decrease
 
