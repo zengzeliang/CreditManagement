@@ -17,16 +17,23 @@
 
 
 一、功能说明
+
 包含用户初始化额度、增加额度、减少额度功能
+
 二、创建mysql数据库和表信息
+
 -- 创建数据库
+
 DROP DATABASE IF EXISTS credit_management;
 CREATE DATABASE credit_management;
 
 
 -- 创建额度类型表
+
 USE credit_management;
+
 DROP TABLE IF EXISTS `amount_category`;
+
 CREATE TABLE `amount_category` (
     `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `amountType` VARCHAR(255),
@@ -35,7 +42,9 @@ CREATE TABLE `amount_category` (
 );
 
 -- 创建账户表
+
 DROP TABLE IF EXISTS `credit_account`;
+
 CREATE TABLE `credit_account` (
     `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `idCardNo` VARCHAR(255),
@@ -44,7 +53,9 @@ CREATE TABLE `credit_account` (
 );
 
 -- 创建账户操作流水表
+
 DROP TABLE IF EXISTS `credit_account_transaction_log`;
+
 CREATE TABLE `credit_account_transaction_log` (
     `seqNo` VARCHAR(255) NOT NULL PRIMARY KEY,
     `creditAccountId` BIGINT,
@@ -55,14 +66,18 @@ CREATE TABLE `credit_account_transaction_log` (
 );
 
 -- 序列号生成表
+
 DROP TABLE IF EXISTS `seq_no`;
+
 CREATE TABLE `seq_no` (
     `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `value` CHAR(1)
 );
 
 -- 生成用户信息表
+
 DROP TABLE IF EXISTS `user_info`;
+
 CREATE TABLE `user_info` (
     `userId` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(255),
@@ -72,19 +87,25 @@ CREATE TABLE `user_info` (
 );
 
 -- 新增amount_category数据
+
 insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00');
 
 三、接口API
+
 1. 查询额度
+
 /api/credit/queryAmount?idCardNo=1234566
 
 示例
+
 /api/credit/queryAmount?idCardNo=1234567
 
 3. 初始化额度
+
 /api/credit/initialize
 
 示例
+
 {
     "username": "zzl",
     "idCardNo": "1234567",
@@ -93,18 +114,22 @@ insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00'
 }
 
 5. 增加额度
+
 /api/credit/increase
 
 示例
+
 {
     "idCardNo": "1234567",
     "amount": 3000.00
 }
 
 6. 减少额度
+
 /api/credit/decrease
 
 示例
+
 {
     "idCardNo": "1234567",
     "amount": 1000.00
