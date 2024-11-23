@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.credit.creditmanagement.mapper.CreditAccountMapper">
-    <insert id="insertCreditAccount" parameterType="com.credit.creditmanagement.entity.CreditAccount">
+    <insert id="insertCreditAccount" parameterType="com.credit.creditmanagement.entity.CreditAccount" useGeneratedKeys="true" keyProperty="id">
         insert into credit_account(idCardNo, creditLimit) values (#{creditAccount.idCardNo}, #{creditAccount.creditLimit})
     </insert>
 

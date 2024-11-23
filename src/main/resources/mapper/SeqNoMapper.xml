@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.credit.creditmanagement.mapper.SeqNoMapper">
-    <insert id="insertSeqNo" parameterType="com.credit.creditmanagement.entity.SeqNo">
+    <insert id="insertSeqNo" parameterType="com.credit.creditmanagement.entity.SeqNo" useGeneratedKeys="true" keyProperty="id">
         insert into seq_no(value) values (#{seqNo.value})
     </insert>
 
