@@ -61,6 +61,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         if(Objects.isNull(request) || StringUtil.isNullOrEmpty(request.getAmountType()) || StringUtil.isNullOrEmpty(request.getIdCardNo())) {
             return ServiceResult.getFailureResult(CreditManagementErrCodeEnum.EMPTY_PARAM.getCode(), CreditManagementErrCodeEnum.EMPTY_PARAM.getMessage());
         }
+        CreditAccountTransactionLog creditAccountTransactionLog = null;
         try {
             // 如果已经申请成功了，不能再次申请
             CreditAccount creditAccount = creditAccountMapper.selectCreditAccountByIdCardNo(request.getIdCardNo());
@@ -75,7 +76,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             // 获取申请的额度
             BigDecimal amount = amountCategory.getAmount();
             // 保存流水记录
-            CreditAccountTransactionLog creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.INITIAL_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
+            creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.INITIAL_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
             // 给用户开户以及更新流水状态
             // 获取spring中给事务添加切面的对象，否则不会通过带切面的对象执行，导致事务失效
             CreditAccountServiceImpl creditAccountService = applicationContext.getBean(CreditAccountServiceImpl.class);
@@ -93,8 +94,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             return ServiceResult.getSuccessResult(null);
         } catch (Throwable e) {
             log.error("CreditAccountController initialCreditAccount error", e);
-            // 发送mq异步更新流水表为失败状态，不影响主流程
-            // sendMqForTransLogUpdateFial();
+            if (Objects.nonNull(creditAccountTransactionLog)) {
+                updateTransLog(creditAccountTransactionLog, TransLogStatusEnum.FAIL);
+                // 后续可以发送mq异步更新流水表为失败状态，不影响主流程
+                // sendMqForTransLogUpdateFial();
+            }
             // 为自定义异常，抛出自定义错误信息
             if (e instanceof  CreditManagementException) {
                 CreditManagementException exception = (CreditManagementException) e;
@@ -119,10 +123,10 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return ServiceResult.getFailureResult(CreditManagementErrCodeEnum.PARAM_ERROR.getCode(), CreditManagementErrCodeEnum.PARAM_ERROR.getMessage());
         }
-
+        CreditAccountTransactionLog creditAccountTransactionLog = null;
         try {
             // 记录流水表
-            CreditAccountTransactionLog creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.INCREASE_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
+            creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.INCREASE_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
             // 查询额度记录
             CreditAccount creditAccount = creditAccountMapper.selectCreditAccountByIdCardNoForUpdate(request.getIdCardNo());
             // 不存在记录，需要先申请额度
@@ -135,8 +139,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             return ServiceResult.getSuccessResult(null);
         } catch (Throwable e) {
             log.error("CreditAccountController increaseCreditAccount error", e);
-            // 发送mq异步更新流水表为失败状态，不影响主流程
-            // sendMqForTransLogUpdateFial();
+            if (Objects.nonNull(creditAccountTransactionLog)) {
+                updateTransLog(creditAccountTransactionLog, TransLogStatusEnum.FAIL);
+                // 后续可以发送mq异步更新流水表为失败状态，不影响主流程
+                // sendMqForTransLogUpdateFial();
+            }
             // 为自定义异常，抛出自定义错误信息
             if (e instanceof  CreditManagementException) {
                 CreditManagementException exception = (CreditManagementException) e;
@@ -160,9 +167,10 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return ServiceResult.getFailureResult(CreditManagementErrCodeEnum.PARAM_ERROR.getCode(), CreditManagementErrCodeEnum.PARAM_ERROR.getMessage());
         }
+        CreditAccountTransactionLog creditAccountTransactionLog = null;
         try {
             // 记录流水表
-            CreditAccountTransactionLog creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.DECREASE_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
+            creditAccountTransactionLog = saveTransLog(AccountOperationTypeEnum.DECREASE_AMOUNT, TransLogStatusEnum.START_TRANS_LOG);
             // 查询额度记录
             CreditAccount creditAccount = creditAccountMapper.selectCreditAccountByIdCardNoForUpdate(request.getIdCardNo());
             // 不存在记录，需要先申请额度
@@ -180,8 +188,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             return ServiceResult.getSuccessResult(null);
         } catch (Throwable e) {
             log.error("CreditAccountController decreaseCreditAccount error", e);
-            // 发送mq异步更新流水表为失败状态，不影响主流程
-            // sendMqForTransLogUpdateFial();
+            if (Objects.nonNull(creditAccountTransactionLog)) {
+                updateTransLog(creditAccountTransactionLog, TransLogStatusEnum.FAIL);
+                // 后续可以发送mq异步更新流水表为失败状态，不影响主流程
+                // sendMqForTransLogUpdateFial();
+            }
             // 为自定义异常，抛出自定义错误信息
             if (e instanceof  CreditManagementException) {
                 CreditManagementException exception = (CreditManagementException) e;
@@ -208,8 +219,6 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             return ServiceResult.getSuccessResult(creditAccount);
         } catch (Throwable e) {
             log.error("CreditAccountController queryCreditAccount error", e);
-            // 发送mq异步更新流水表为失败状态，不影响主流程
-            // sendMqForTransLogUpdateFial();
             // 为自定义异常，抛出自定义错误信息
             if (e instanceof  CreditManagementException) {
                 CreditManagementException exception = (CreditManagementException) e;
@@ -239,7 +248,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         }
         // 不足n位补0
         String seqNoFormat = String.format("%0" + seqNoLen + "d", seqNo.getId());
-        creditAccountTransactionLog.setSeqNo(DateTimeUtil.getCurTime() +  seqNoFormat);
+        creditAccountTransactionLog.setSeqNo(DateTimeUtil.getCurTime() + seqNoFormat);
         creditAccountTransactionLog.setOperationTime(new Date());
         creditAccountTransactionLog.setStatus(transLogStatusEnum.getStatus());
         creditAccountTransactionLog.setOperation(accountOperationTypeEnum.getOperationType());
@@ -249,6 +258,19 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             throw new CreditManagementException(CreditManagementErrCodeEnum.INSERT_CREDIT_ACCOUNT_AMOUNT_TRANSACTION_LOG_ERROR.getCode(), CreditManagementErrCodeEnum.INSERT_CREDIT_ACCOUNT_AMOUNT_TRANSACTION_LOG_ERROR.getMessage());
         }
         return creditAccountTransactionLog;
+    }
+
+
+    /**
+     * 更新transLog的状态
+     * @param creditAccountTransactionLog
+     * @param transLogStatusEnum
+     */
+    private void updateTransLog(CreditAccountTransactionLog creditAccountTransactionLog, TransLogStatusEnum transLogStatusEnum) {
+        CreditAccountTransactionLog updateTransactionLog = new CreditAccountTransactionLog();
+        updateTransactionLog.setStatus(transLogStatusEnum.getStatus());
+        updateTransactionLog.setSeqNo(creditAccountTransactionLog.getSeqNo());
+        creditAccountTransactionLogMapper.updateCreditAccountTransactionLog(updateTransactionLog);
     }
 
     /**
