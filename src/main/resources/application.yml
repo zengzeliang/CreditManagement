@@ -3,17 +3,18 @@ spring:
   redis:
     host: 118.31.113.254
     port: 6379
-    password: redis9298
+    password: xxx
     database: 0
   datasource:
     url: jdbc:mysql://118.31.113.254:3306/credit_management
     username: root
-    password: mysql9298
+    password: xxx
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
       connection-timeout: 30000
+      maxLifetime: 900000 # 设置为15分钟，单位是毫秒
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

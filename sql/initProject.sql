@@ -4,9 +4,9 @@ create database credit_management;
 -- 创建额度类型表
 CREATE TABLE `amount_category` (
                                    `id` BIGINT NOT NULL PRIMARY KEY,
-                                   `amount_type` VARCHAR(255),
+                                   `amountType` VARCHAR(255),
                                    `amount` DECIMAL(19, 2),
-                                   UNIQUE KEY `idx_amount_type` (`amount_type`)
+                                   UNIQUE KEY `idx_amountType` (`amountType`)
 );
 
 -- 创建账户表

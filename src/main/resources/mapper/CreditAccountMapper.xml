@@ -7,11 +7,11 @@
         insert into credit_account(idCardNo, creditLimit) values (#{creditAccount.idCardNo}, #{creditAccount.creditLimit})
     </insert>
 
-    <select id="selectCreditAccountByIdCardNo" parameterType="com.credit.creditmanagement.entity.CreditAccount">
+    <select id="selectCreditAccountByIdCardNo" resultType="com.credit.creditmanagement.entity.CreditAccount">
         select id, idCardNo, creditLimit from credit_account where idCardNo = #{idCardNo}
     </select>
 
-    <select id="selectCreditAccountByIdCardNoForUpdate" parameterType="com.credit.creditmanagement.entity.CreditAccount">
+    <select id="selectCreditAccountByIdCardNoForUpdate" resultType="com.credit.creditmanagement.entity.CreditAccount">
         select id, idCardNo, creditLimit from credit_account where idCardNo = #{idCardNo} for update
     </select>
 </mapper>
