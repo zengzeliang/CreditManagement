@@ -73,13 +73,17 @@ CREATE TABLE `user_info` (
 
 -- 新增amount_category数据
 insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00');
+
 三、接口API
 1. 查询额度
 /api/credit/queryAmount?idCardNo=1234566
+
 示例
 /api/credit/queryAmount?idCardNo=1234567
-2. 初始化额度
+
+3. 初始化额度
 /api/credit/initialize
+
 示例
 {
     "username": "zzl",
@@ -87,22 +91,28 @@ insert into `amount_category` (`amountType`, `amount`) values ('1001', '5000.00'
     "amountType": "1001",
     "address": "浙江省杭州市"
 }
-3. 增加额度
+
+5. 增加额度
 /api/credit/increase
+
 示例
 {
     "idCardNo": "1234567",
     "amount": 3000.00
 }
-4. 减少额度
+
+6. 减少额度
 /api/credit/decrease
+
 示例
 {
     "idCardNo": "1234567",
     "amount": 1000.00
 }
+
 四、测试用例
-暂时无法在飞书文档外展示此内容
+<img width="709" alt="image" src="https://github.com/user-attachments/assets/049cc45c-315c-4ad2-ad93-e0c58f80ec62">
+
 
 备注
 定时任务执行时间修改
